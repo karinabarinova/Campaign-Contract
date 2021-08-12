@@ -22,7 +22,7 @@ beforeEach(async () => {
     });
     [campaignAddress] = await factory.methods.getDeployedCampaigns().call(); //first element
     campaign = await new web3.eth.Contract(
-        JSON.parse(compiledFactory.interface),
+        JSON.parse(compiledCampaign.interface),
         campaignAddress
     );
 });
@@ -31,5 +31,17 @@ describe('Campaigns', () => {
     it('deploys a factory and a campaign', () => {
         assert.ok(factory.options.address);
         assert.ok(campaign.options.address);
-    })
+    });
+    it('marks caller as the campaign manager', async () => {
+        const manager = await campaign.methods.manager().call();
+        assert.strictEqual(accounts[0], manager);
+    });
+    it('allows people to contribute money', async () => {
+        await campaign.methods.contribute().send({
+            from: accounts[1],
+            value: web3.utils.toWei('0.02', 'ether')
+        })
+        const isContributer = await campaign.methods.approvers(accounts[1]).call();
+        assert(isContributer);
+    });
 })
