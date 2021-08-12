@@ -8,7 +8,7 @@ function Index({campaigns}) {
     )
 }
 
-Index.getInitialProps = async (ctx) => {
+Index.getInitialProps = async () => {
     const campaigns = await factory.methods.getDeployedCampaigns().call();
     return {campaigns};
 }
