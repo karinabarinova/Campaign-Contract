@@ -1,7 +1,7 @@
 import React from 'react';
 import factory from '../ethereum/factory';
-import { Card } from 'semantic-ui-react'
-import 'semantic-ui-css/semantic.min.css'
+import { Card, Button } from 'semantic-ui-react';
+import 'semantic-ui-css/semantic.min.css';
 
 function Index({campaigns}) {
 
@@ -25,6 +25,11 @@ function Index({campaigns}) {
                 href="//cdn.jsdelivr.net/npm/semantic-ui@$2.0.3/dist/semantic.min.css"
             />
             {renderCampaigns()}
+            <Button 
+                content="Create campaign" 
+                icon="add circle"
+                primary
+            />
         </div>
     )
 }
