@@ -26,12 +26,13 @@ function Index({campaigns}) {
                     rel="stylesheet"
                     href="//cdn.jsdelivr.net/npm/semantic-ui@$2.0.3/dist/semantic.min.css"
                 />
-                {renderCampaigns()}
                 <Button 
                     content="Create campaign" 
                     icon="add circle"
                     primary
+                    floated="right"
                 />
+                {renderCampaigns()}
             </div>
         </Layout>
     )
