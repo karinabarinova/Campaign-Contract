@@ -11,7 +11,7 @@ function Index({campaigns}) {
             return {
                 header: address,
                 description: (
-                    <Link route={`/campaigns/${address}`}>
+                <Link route={`/campaigns/${address}`}>
                         <a>View Campaign</a>
                     </Link>
                 ),
