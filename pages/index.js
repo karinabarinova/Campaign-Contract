@@ -21,11 +21,6 @@ function Index({campaigns}) {
         <Layout>
             <div>
                 <h3>Open campaigns</h3>
-                <link
-                    async
-                    rel="stylesheet"
-                    href="//cdn.jsdelivr.net/npm/semantic-ui@$2.0.3/dist/semantic.min.css"
-                />
                 <Button 
                     content="Create campaign" 
                     icon="add circle"
