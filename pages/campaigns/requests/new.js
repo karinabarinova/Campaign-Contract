@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Layout from '../../../components/Layout';
-import { Form, Button, Menu, Input } from 'semantic-ui-react';
+import { Form, Button, Message, Input } from 'semantic-ui-react';
 import web3 from '../../../ethereum/web3';
 import Campaign from '../../../ethereum/campaign';
 import { Router, Link } from '../../../routes';
@@ -9,11 +9,45 @@ const NewRequest = ({address}) => {
     const [value, setValue] = useState('');
     const [description, setDescription] = useState('');
     const [recipient, setRecipient] = useState('');
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+
+    async function onSubmit(e) {
+        e.preventDefault();
+
+        const campaign = Campaign(address);
+
+        setError('');
+        setLoading(true);
+        try {
+            const accounts = await web3.eth.getAccounts();
+            await campaign.methods
+                .createRequest(
+                    description,
+                    web3.utils.toWei(value, 'ether'),
+                    recipient
+                )   
+                .send({from: accounts[0]})
+            Router.pushRoute(`/campaigns/${address}/requests`)
+        } catch (err) {
+            setError(err.message);
+        }
+        setLoading(false);
+        setValue('');
+        setDescription('');
+        setRecipient('');
+    }
 
     return (
         <Layout>
+            <Link route={`/campaigns/${address}/requests`}>
+                <a>
+                    Go back
+                </a>
+            </Link>
             <h3>Create a Request</h3>
-            <Form>
+            <Form onSubmit={onSubmit} error={!!error}>
+                <Message error header="Oops, something went wrong" content={error} />
                 <Form.Field>
                     <label>Description</label>
                     <Input 
@@ -35,7 +69,7 @@ const NewRequest = ({address}) => {
                         onChange={(e) => setRecipient(e.target.value)}
                     />
                 </Form.Field>
-                <Button primary>Create</Button>
+                <Button primary loading={loading}>Create</Button>
             </Form>
         </Layout>
     )
