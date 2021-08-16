@@ -3,6 +3,7 @@ import { Card } from 'semantic-ui-react';
 import Layout from '../../components/Layout';
 import Campaign from '../../ethereum/campaign';
 import web3 from '../../ethereum/web3';
+import ContributeForm from '../../components/ContributeForm';
 
 const CampaignShow = (props) => {
     function renderCards() {
@@ -50,6 +51,7 @@ const CampaignShow = (props) => {
         <Layout>
             <h3>Campaign Show</h3>
             {renderCards()}
+            <ContributeForm />
         </Layout>
     )
 }
