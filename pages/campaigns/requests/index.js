@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from 'semantic-ui-react';
 import { Link } from '../../../routes';
 import Layout from '../../../components/Layout';
+import Campaign from '../../../ethereum/campaign';
 
 const RequestIndex = ({address}) => {
     return (
@@ -18,7 +19,16 @@ const RequestIndex = ({address}) => {
 
 RequestIndex.getInitialProps = async (props) => {
     const {address} = props.query;
-    return {address};
+    const campaign = Campaign(address);
+    const requestsCount = await campaign.methods.getRequestsCount().call();
+    const requests = await Promise.all(
+        Array(parseInt(requestsCount))
+            .fill()
+            .map((element, index) => {
+                return campaign.methods.requests(index).call()
+            })
+    );
+    return {address, requestsCount, requests};
 }
 
 export default RequestIndex;
